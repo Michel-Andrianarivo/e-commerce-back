@@ -33,4 +33,7 @@ export class CreateProductDto {
 
   @IsString()
   category: string;
+
+  @IsString()
+  subCategory: string;
 }

@@ -51,6 +51,7 @@ export class ProductService {
       brands,
       shippings,
       category,
+      subCategory,
     } = updateProductDto;
 
     const product = await this.productRepository.find({ where: { id: id } });
@@ -72,6 +73,7 @@ export class ProductService {
     brands && (updatedProduct.brands = brands);
     shippings && (updatedProduct.shippings = shippings);
     category && (updatedProduct.category = category);
+    subCategory && (updatedProduct.category = subCategory);
 
     await this.productRepository.update({ id: id }, updatedProduct);
 
@@ -91,5 +93,15 @@ export class ProductService {
     await this.productRepository.remove(findProduct);
 
     return `Product with id ${id} deleted...`;
+  }
+
+  async findProductByCategory(name: string) {
+    const findProduct = await this.productRepository
+      .createQueryBuilder('product')
+      .where('product.subCategory = :name', { name })
+      .getMany();
+    console.log('NAME DETAILS', name.toLowerCase().replace(/\s+/g, '-'));
+
+    return findProduct;
   }
 }
